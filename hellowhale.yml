@@ -2,23 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-blue-whale
+  name: cloud-app-deployment
 spec:
   replicas: 5
   selector:
     matchLabels:
-      app: hello-whale-app
-      version: blue
+      app: cloud-app
   template:
     metadata:
-      name: hello-blue-whale-pod
+      name: cloud-app-pod
       labels:
-        app: hello-whale-app
-        version: blue
+        app: cloud-app
     spec:
       containers:
-      - name: hello-whale-container
-        image: vamsijakkula/hellowhale:latest
+      - name: cloud-app-container
+        image: jenk1:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -26,15 +24,13 @@ spec:
 apiVersion: v1
 kind: Service 
 metadata:
-  name: hello-whale-svc
+  name: cloud-app-svc
   labels:
-    app: hello-whale-app
+    app: cloud-app
 spec:
   selector:
-    app: hello-whale-app
-    version: blue
-  type: NodePort
-  ports:
-  - nodePort: 31113
-    port: 80
-    targetPort: 80
+    app: cloud-app
+    type: LoadBalancer
+    ports:
+    - port: 5000
+      targetPort: 5000
